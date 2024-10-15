@@ -1,0 +1,391 @@
+\documentclass{article}
+\input{preamble.tex}
+
+\addbibresource{mybib.bib}
+
+\begin{document}
+
+\title{An 8 hours course in Galois theory}
+
+\author{Ken Lee}
+\date{Autumn 2024}
+\maketitle
+
+\tableofcontents
+
+\section{The main theorem of Galois theory}
+
+We show an example of the fundamental theorem of Galois theory.
+Consider the polynomial $f(T) = T^3 - 2 \in \bQ[T]$.
+Let $\al_0 , \al_1 , \al_2 \in \bC$ be the roots of $f$.
+\[
+  \text{Slogan : Galois theory studies the ``symmetries'' of 
+  roots of polynomials}
+\]
+To make this precise, let us first investigate the field obtained
+by chucking in $\al_0 , \al_1 , \al_2$ to $\bQ$.
+Define \[
+  \bQ_f := \bQ(\al_0 , \al_1 , \al_2) := 
+  \text{ smallest field in $\bC$ containing $\bQ , \al_0 , \al_1 ,\al_2$}
+\]
+\textbf{Question 0 : What does $\bQ_f$ look like?}
+We try to describe $\bQ(\al_0)$ first.
+Consider the map $T \mapsto \al_0$ 
+\begin{cd}
+	{\mathbb{Q}[T]} & {\mathbb{C}} \\
+	{\mathbb{Q}(\alpha_0)}
+	\arrow["{T \mapsto \al_0}", from=1-1, to=1-2]
+	\arrow[dashed, from=1-1, to=2-1]
+	\arrow["\subseteq"', from=2-1, to=1-2]
+\end{cd}
+The image is $\bQ[\al_0]$ the collection of polynomial expressions
+in $\al_0$ with coefficients in $\bQ$.
+Since $f \in \bQ[T]$ is irreducible\footnote{
+  Can be checked by Eisenstein's criterion.
+  Alternatively, a cubic over $\bQ$ is reducible iff
+  it has a root in $\bQ$.
+  This can be checked to be impossible by brute force.
+}
+we have $\bQ[\al_0] = \bQ[T] / (f)$
+and hence this has a $\bQ$-basis $1 , \al_0 , \al_0^2$.
+\begin{itemize}
+  \item \textit{
+    Exercise 1 :  show that for a field $K$ and 
+    an $K$-algebra $A$ which is finite dimensional 
+    as a $K$-vector space and an integral domain,
+    $A$ must be field.
+  }
+\end{itemize}
+It follows that $\bQ[\al_0]$ is a field and hence
+\[
+  \bQ[\al_0] = \bQ(\al_0)
+\]
+Now we do a trick by observing that \[
+  \brkt{\frac{\al_1}{\al_0}}^3 = 2 / 2 = 1
+\]
+Later on, we will give a way of checking when a polynomial has repeated roots
+so assume for now that all $\al_0 , \al_1 , \al_2$ are distinct.
+Then we get $\al_1 = \al_0 \om$ for some $\om \neq 1 = \om^3$,
+and similarly $\al_2 = \al_0 \om^2$.
+The $\om, \om^2$ here are called a \emph{primitive cube roots of unity}.
+They are both roots of the polynomial $T^2 + T + 1 \in \bQ[T]$.
+\begin{itemize}
+  \item \textit{Exercise 2 : Show that $\om \notin \bQ(\al_0)$.\footnote{
+    Hint : Suppose $\om = \la_0 + \la_1 \al_0 + \la_2 \al_0^2$
+    with $\la_i \in \bQ$. Then using $\om^2 + \om + 1 = 0$
+    show that $\al_0$ satisfies a degree four polynomial over $\bQ$.
+    Then deduce that $\al_0 \in \bQ$ for a contradiction.
+  }}
+\end{itemize}
+Since $T^2 + T + 1$ is degree two and does not have a root in $\bQ(\al_0)$,
+it is irreducible in $\bQ(\al_0)[T]$
+and so \[
+  \bQ[\al_0 , \om] \simeq \bQ[\al_0][T] / (T^2 + T + 1)
+\]
+As a $\bQ[\al_0]$-vector space, this has dimension two and
+hence is again a field by Exercise 1. 
+We deduce 
+\textbf{Answer 0 :} \[
+  \bQ(\al_0 , \al_1 , \al_2) = \bQ[\al_0 , \om] = \bQ[\al_0 , \al_1 ,\al_2]
+\]
+
+We now define \emph{the Galois group of $f$} as \[
+  G_f := \AUT_\bQ \bQ(\al_0 , \al_1 , \al_2)
+  := \set{\si : \bQ_f \to \bQ_f \st \si \text{ ring morphism and }
+  \forall\,\la \in \bQ\,,\,\si(\la) = \la}
+\]
+\textbf{Question 1 : Why is this the ``symmetries'' of $\al_0 , \al_1 ,\al_2$?}
+Observation : any $\si \in G_f$ must permute $\set{\al_0 , \al_1 , \al_2}$.
+This is \textbf{\emph{the} trick} that underlies Galois theory : \[
+  f(\si(\al_i)) = (\si(\al_i))^3 - 2 = \si(\al_i^3 - 2) = 0
+\]
+Hence we have a well-define group morphism \[
+  G_f \to \AUT\set{\al_0 , \al_1 , \al_2}
+\]
+Since $\bQ_f = \bQ[\al_0 , \al_1 ,\al_2]$ any $\si \in G_f$
+is determined by what it does on $\al_i$ hence the above morphism is injective.
+\textbf{Answer 1 : The above morphism defines an isomorphism}
+\[
+  G_f \simeq \set{
+    \si \in \AUT\set{\al_0 ,\al_1 ,\al_2} \st 
+    \forall g \in \bQ[X_0 , X_1 , X_2] \,,
+    g(\al_0 , \al_1 ,\al_2) = 0 \implies
+    g(\si(\al_0) , \si(\al_1) , \si(\al_2)) = 0
+  }
+\]
+\textbf{in other words, $G_f$ is the permutations of roots of $f$
+which preserves all algebraic relations over $\bQ$.}
+\begin{proof}
+  $\bQ[\al_0 , \al_1 , \al_2]$ is precisely the image of 
+  the evaluation map \[
+    \bQ[X_0 , X_1 , X_2] \to \bQ[\al_0 , \al_1 , \al_2] \,,\,X_i \mapsto \al_i
+  \]
+  It follows that $
+    \bQ[\al_0 , \al_1 , \al_2] \simeq 
+    \bQ[X_0 , X_1 , X_2] / I
+  $ where $I$ is the set of polynomials $g(X_0 , X_1 , X_2)$ with
+  $g(\al_0 , \al_1 , \al_2)$.
+  From this, it is clear that $G_f$ lands inside the RHS.
+  Now given $\tilde{\si}$ in RHS,
+  one can evaluate \[
+    \bQ[X_0 , X_1 , X_2] \to \bQ[\al_0 , \al_1 ,\al_2] \,,\, 
+    X_i \mapsto \tilde{\si}(\al_i)
+  \]
+  Then by definition $I$ is in the kernel of this evaluation map
+  so it factors through the quotient by $I$ to give
+  an automorphism of $\bQ(\al_0 , \al_1 , \al_2)$ preserving $\bQ$.
+\end{proof}
+Let us now compute $G_f$. We have the following
+\begin{align*}
+  \bQ_f = \bQ[\al_0 , \om] 
+  = \bQ[\al_0][\om]
+  \simeq \frac{\bQ[\al_0][Y]}{(Y^2 + Y + 1)}
+  \simeq \frac{\bQ[X][Y]/(X^3 - 2)}{(X^3 - 2 , Y^2 + Y + 1)/(X^3 - 2)}
+  \simeq \frac{\bQ[X , Y]}{(X^3 - 2 , Y^2 + Y + 1)}
+\end{align*}
+where the last isomorphism is the 3rd isomorphism theorem of rings.
+Consider the 3-cycle $\si := (\al_0 \,\, \al_1 \,\, \al_2)$.
+Knowing $\om = \al_1 / \al_0$ we send $X \mapsto \al_1 , Y \mapsto \omega$.
+\begin{cd}
+  {\mathbb{Q}[X , Y]} & {\mathbb{Q}[\alpha_0 , \omega]} \\
+	{\mathbb{Q}[\alpha_0 , \omega]}
+	\arrow["\begin{array}{c} \begin{matrix}X \mapsto \alpha_1 \\ Y \mapsto \omega\end{matrix} \end{array}", from=1-1, to=1-2]
+	\arrow["\begin{array}{c} \begin{matrix}X \mapsto \alpha_0 \\ Y \mapsto \omega\end{matrix} \end{array}"', from=1-1, to=2-1]
+	\arrow["\simeq"', dashed, from=2-1, to=1-2]
+\end{cd}
+We get the factoring because $\al_1^3 - 2 = 0 = \om^2 + \om + 1$
+and so $\si \in G_f$.
+Now consider $\tau := (\al_0 \,\, \al_1)$.
+Again, since $\om = \al_1 / \al_0$ we know 
+$\tau$ should send $\om \mapsto 1 / \om = \om^2$ so we send 
+$X \mapsto \al_0 , Y \mapsto \omega^2$.
+\begin{cd}
+  {\mathbb{Q}[X , Y]} & {\mathbb{Q}[\alpha_0 , \omega]} \\
+	{\mathbb{Q}[\alpha_0 , \omega]}
+	\arrow["\begin{array}{c} \begin{matrix}X \mapsto \alpha_1 \\ Y \mapsto \omega^2\end{matrix} \end{array}", from=1-1, to=1-2]
+	\arrow["\begin{array}{c} \begin{matrix}X \mapsto \alpha_0 \\ Y \mapsto \omega\end{matrix} \end{array}"', from=1-1, to=2-1]
+	\arrow["\simeq"', dashed, from=2-1, to=1-2]
+\end{cd}
+Again $\al_1^3 - 2 = 0 = (\om^2)^2 + \om^2 + 1$ gives the above factoring
+and hence $\tau \in G_f$.
+It follows that $G_f$ is the whole of $\AUT\set{\al_0 , \al_1 , \al_2}$.
+
+Symmetry means ``changes that cannot be observed''.
+The symmetries of a triangle are the ways you can change the triangle
+such that you cannot tell the difference between before and after.
+In the same way, $G_f$ are the ways you can swap of roots of $f$
+such that as far as $\bQ$ can tell, nothing has changed.
+In this example, there is nothing special about $\al_0$;
+the whole argument works starting with $\al_1$ or $\al_2$.
+The roots are equally ambiguous, which is reflected
+in the quantitative fact that $G_f \simeq S_3$.
+An example of less ambiguity is $T^3 - 1$.
+The roots are $1, \om , \om^2$.
+The Galois group of $T^3 - 1$ is cyclic order two generated by 
+$\om \mapsto \om^2$.
+This reflects the fact that 1 is more special than $\om, \om^2$
+whilst the latter cannot be distinguished from each other.
+Indeed if one writes $\mu := \om^2$ then $\om = \mu^2$.
+
+Back to $T^3 - 2$. 
+Observe that $\bQ \subs \bQ_f^{G_f} := $
+the set of elements in $\bQ_f$ fixed by $G_f$.
+\textbf{Claim : $\bQ = \bQ_f^{G_f}$.}
+Let $x\in \bQ_f$ be fixed by $G_f$.
+We approach $\bQ_f$ this time by adding $\om$ first then $\al_0$.
+Since $\bQ_f = \bQ[\om][\al_0]$ we can write
+\[
+  x = \la_0 + \la_1 \al_0 + \la_2 \al_0^2
+\]
+for $\la_i \in \bQ(\om)$.
+Then since $\si(\om) = \om$ we have \[
+  x = \si(x) = \la_0 + \la_1 \om \al_0 + \la_2 \om^2 \al_0^2
+\]
+Since $1 , \al_0 , \al_0^2$ are a $\bQ(\om)$-basis for $\bQ_f$,
+we can compare coefficients to get $\la_1 = \la_1 \om$ and $\la_2 = \la_2 \om^2$
+This implies $\la_1 = 0 = \la_2$ and so $x \in \bQ(\om)$.
+Now $x = \mu_0 + \mu_1 \om$ for $\mu_i \in \bQ$.
+Then \[
+  x = \tau(x) = \mu_0 + \mu_1 \om^2
+  = (\mu_0 - \mu_1) - \mu_1 \om
+\]
+which implies $\mu_1 = - \mu_1$ and so $\mu_1 = 0$.
+We find that $x \in \bQ$.
+More generally, given any subgroup $H$ of $G_f$ 
+we can compute the \emph{fixed subfield} $\bQ_f^H$.
+Here is a diagram of all the subgroups of $G_f$ and their corresponding
+fixed subfields.
+\begin{cd}[sep = small]
+  & {\mathbb{Q}(\alpha_0 ,\alpha_1 ,\alpha_2)} &&&& 1 \\
+	{\mathbb{Q}(\omega)} & {\mathbb{Q}(\alpha_0)} & {\mathbb{Q}(\alpha_1)} & {\mathbb{Q}(\alpha_2)} & {\langle(\alpha_0 \,\,\alpha_1 \,\,\alpha_2)\rangle} & {\langle(\alpha_1 \,\,\alpha_2)\rangle} & {\langle(\alpha_0 \,\,\alpha_2)\rangle} & {\langle(\alpha_0 \,\,\alpha_1)\rangle} \\
+	& {\mathbb{Q}} &&&& {G_f}
+	\arrow[from=1-6, to=2-5]
+	\arrow[from=1-6, to=2-6]
+	\arrow[from=1-6, to=2-7]
+	\arrow[from=1-6, to=2-8]
+	\arrow[from=2-1, to=1-2]
+	\arrow[from=2-2, to=1-2]
+	\arrow[from=2-3, to=1-2]
+	\arrow[from=2-4, to=1-2]
+	\arrow[from=2-5, to=3-6]
+	\arrow[from=2-6, to=3-6]
+	\arrow[from=2-7, to=3-6]
+	\arrow[from=2-8, to=3-6]
+	\arrow[from=3-2, to=2-1]
+	\arrow[from=3-2, to=2-2]
+	\arrow[from=3-2, to=2-3]
+	\arrow[from=3-2, to=2-4]
+\end{cd}
+The fundamental theorem of Galois theory says
+this is all of them.
+To be more precise, we make some definitions.
+
+\begin{dfn}[Galois extension]
+
+  Let $K \to L$ be an extension of fields.
+  We often identify $K$ with its image in $L$.
+  We call it \emph{Galois} when there is a finite group $G \subs \AUT_K L$
+  such that $K = L^G$. 
+\end{dfn}
+The extension earlier $\bQ \subs \bQ(\al_0 , \al_1 , \al_2)$ was an example
+of a Galois extension.
+\begin{prop}[Fundamental theorem of Galois theory]
+
+  Let $K \to L$ be a Galois extension of fields
+  and let $G := \AUT_K L$.
+  Consider the following two constructions : 
+  \begin{itemize}
+    \item Given a subgroup $H \subs G$,
+    define $L^H$ as the set of fixed points of $L$ by $H$.
+    This defines a field containing the image of $K$.
+    \item Given a subfield $M \subs L$ containing $K$,
+    define $\AUT_M L$ as the subgroup of $G$ acting trivially on $M$.
+  \end{itemize}
+  Then we have an order reversing bijection \begin{cd}
+    {\set{\text{subextensions }M\subseteq L}} & {\set{\text{subgroups of }\mathrm{Aut}_K L}}
+    \arrow["{\mathrm{Aut}_\_ L}", shift left=3, from=1-1, to=1-2]
+    \arrow["\simeq"{description}, draw=none, from=1-1, to=1-2]
+    \arrow["{L^\_}", shift left=3, from=1-2, to=1-1]
+  \end{cd}
+\end{prop}
+The Galois extension $\bQ_f / \bQ$ is an example of a \emph{solvable} extension.
+\begin{dfn}
+
+  Let $K \to L$ be a field extensions.
+  We say it is \emph{radical} when
+  there exists a chain of extensions 
+  \[
+    K = L_0 \to L_1 \to \cdots \to L_{n-1} \to L_n = L
+  \]
+  such that each $L_{i+1} = L_i(\al_i)$
+  for some $\al_i$ with $\al_i^{d_i} \in L_i$ for some $d_i > 0$.
+
+  We say a polynomial $f \in K[T]$ is \emph{solvable by radicals}
+  when $K_f / K$ is radical.
+\end{dfn}
+
+Notice that in the example, that the sequence of groups 
+\[
+  1 \to \langle(\alpha_0 \,\,\alpha_1 \,\,\alpha_2)\rangle \to G_f
+\]
+is such that one subgroup is normal in the next
+and furthermore that the factor groups are cyclic.
+This is an example of a \emph{solvable group}.
+
+\begin{dfn}
+  
+  Let $G$ be a finite group.
+  Then $G$ is called solvable when
+  there exists a chain \[
+    1 = H_0 \triangleleft H_1 \triangleleft
+    \cdots \triangleleft H_{n-1} \triangleleft H_n = G
+  \]
+  such that $H_{n+1} / H_n$ is cyclic.
+\end{dfn}
+
+We will show the following by the end of the course.
+\begin{prop}[Characteristization of solvable polynomials]
+  
+  Let $K$ be a field of characteristic zero and $f \in K[T]$.
+  Then $f$ is solvable by radicals iff $G_f$ is solvable.
+\end{prop}
+
+\begin{prop}
+  The polynomial $T^5 - T - 1 \in \bQ[T]$ has Galois group $S_5$
+  and hence is not solvable by radicals.
+\end{prop}
+
+% \subsection{Cubic equation}
+
+% Using the fundamental theorem of Galois theory
+% we derive the cubic equation.
+% Let $f(T) = T^3 + a T^2 + b T + c \in \bQ[T]$.
+% Let $S = \set{\al_0 , \al_1 , \al_2} \subs \bC$ be the set of solutions 
+% to $f(x) = 0$.
+% \begin{itemize}
+%   \item Goal : express $\al_i$ using $\bQ , + , - , \times, \div , \sqrt[n]{\_}$
+% \end{itemize}
+% First, a simplification
+% \[
+%   f(T - a / 3) = T^3 + 3 p T + 2 q
+% \]
+% so we will solve $f(T) = T^3 + 3 p T + 2 q$ instead.
+% Since we are solving cubics, it is conceivable that
+% we may need cube roots of 1 at some point.
+% Choose a primitive cube root of unity $\om \neq 1 = \om^3$.
+% This is okay for our goal because $\om^2 + \om + 1 = 0$
+% so $\om$ can be solved by radicals from $\bQ$.
+% We thus change our base field to $K := \bQ(\om)$.
+% Consider the elements in $\bC$ : 
+% \begin{align*}
+%   u &= \al_0 + \om \al_1 + \om^2 \al_2 \\
+%   v &= \al_0 + \om^2 \al_1 + \om \al_2
+% \end{align*}
+% Note that we can express the roots in terms of $u , v$ : 
+% using $\om^2 + \om + 1 = 0$ we have
+% \begin{align*}
+%   u + v = 2 \al_0 + (\om + \om^2) \al_1 + (\om + \om^2) \al_2
+%   = 2 \al_0 - \al_1 - \al_2 = 3 \al_0 \\
+% \end{align*}
+% so $\al_0 = (u + v) / 3$ and similarly $\al_1 = (\om u + \om^2 v) / 3 , 
+% \al_2 = (\om^2 u + \om v) / 3$.
+
+% We investigate how elements of $\AUT\set{\al_0 , \al_1 , \al_2}$
+% acts on $u$ and $v$.
+% Let $\si = (\al_0 \,\,\al_1 \,\,\al_2)$.
+% Then \begin{align*}
+%   \si(u) = \om^2 u \\
+%   \si(v) = \om v
+% \end{align*}
+% Let $\tau = (\al_1 \,\,\al_2)$ then
+% \begin{align*}
+%   \tau(u) = v \\
+%   \tau(v) = u 
+% \end{align*}
+% Since $\si , \tau$ generate $\AUT\set{\al_0 , \al_1 , \al_2}$,
+% no matter what $G_f$ is it must fix $u^3 + v^3 , u v$
+% and hence by the fundamental theorem $u^3 + v^3 , u v \in K$.
+% An explicit computation shows : 
+% \begin{align*}
+%   u v &= - 3^2 p \\
+%   u^3 + v^3 &= - 3^3 2 q
+% \end{align*}
+% Then $u^3$ and $v^3$ are the solutions to $T^2 + 3^3 2 q T - 3^6 p^3 \in K[T]$, 
+
+\section{Finite extensions and the embedding theorem}
+
+\section{Normal extensions}
+
+\section{Separable extensions}
+
+\section{Galois extensions and the fundamental theorem}
+
+\section{Cyclotomic extensions, Kummer extensions, Radical extensions}
+
+\section{Finite fields}
+
+\section{Frobenius lifts and existence of non-solvable quintic}
+
+\printbibliography
+
+\end{document}
