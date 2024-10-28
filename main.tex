@@ -69,17 +69,11 @@ Then we get $\al_1 = \al_0 \om$ for some $\om \neq 1 = \om^3$,
 and similarly $\al_2 = \al_0 \om^2$.
 The $\om, \om^2$ here are called a \emph{primitive cube roots of unity}.
 They are both roots of the polynomial $T^2 + T + 1 \in \bQ[T]$.
-\begin{itemize}
-  \item \textit{Exercise 2 : Show that $\om \notin \bQ(\al_0)$.\footnote{
-    Hint : Suppose $\om = \la_0 + \la_1 \al_0 + \la_2 \al_0^2$
-    with $\la_i \in \bQ$. Then using $\om^2 + \om + 1 = 0$
-    show that $\al_0$ satisfies a degree four polynomial over $\bQ$.
-    Then deduce that $\al_0 \in \bQ$ for a contradiction.
-  }}
-\end{itemize}
-Since $T^2 + T + 1$ is degree two and does not have a root in $\bQ(\al_0)$,
-it is irreducible in $\bQ(\al_0)[T]$
-and so \[
+In the next section, we will be able to show that $\om \notin \bQ(\alpha_0)$.
+Taking this for granted for now,
+$T^2 + T + 1$ does not have a root in $\bQ(\al_0)$,
+so it is irreducible in $\bQ(\al_0)[T]$.
+It follows that \[
   \bQ[\al_0 , \om] \simeq \bQ[\al_0][T] / (T^2 + T + 1)
 \]
 As a $\bQ[\al_0]$-vector space, this has dimension two and
@@ -374,11 +368,575 @@ We will show the following by the end of the course.
 
 \section{Finite extensions and the embedding theorem}
 
-\section{Normal extensions}
+We saw in the previous section that 
+$\om \in \bQ(\al_0)$ precisely when there is a solution to $T^2 + T + 1$
+inside $\bQ(\al_0)$.
+Accordingly, there is no copy of $\bQ(\om)$ inside $\bQ(\al_0)$.
+This section investigates this phenomenon.
+We didn't formally define field extensions last time.
 
-\section{Separable extensions}
+\begin{dfn}
+  A field extension is a ring morphism $\io : K \to L$ between fields.
+  
+  Since fields have no non-trivial ideals,
+  any field extension $\io : K \to L$ must be injective.
+  When it is clear, we often identify $K$ with its image $\io K$.
+\end{dfn}
+
+\begin{eg}
+  Here is an example of a field extension from a field to itself.
+  Let $\bQ(T) := \mathrm{Frac}\,\bQ[T]$.
+  Define $\bQ[T] \to \bQ[T] , T \mapsto T^2$.
+  Then this induces a field extension $\bQ(T) \to \bQ(T)$
+  where the image of the first copy is $\bQ(T^2)$.
+\end{eg}
+
+A basic invariant of a field extension is its degree.
+
+\begin{dfn}[Degree of an extension]
+  Let $K \to L$ be a field extension.
+  Define its \emph{degree} as $[L : K] := \dim_K L$.
+  It is called finite when $[L : K] < \infty$.
+\end{dfn}
+
+When proving things about a finite extension $K \to L$,
+we will often do so by inducting on $[L : K]$.
+The following is useful.
+
+\begin{prop}[Tower law]
+  
+  Let $K \to L \to N$ be extensions of fields.
+  Then $[N : K] = [N : L][L : K]$.
+  In particular, a sequence of finite extensions is finite.
+\end{prop}
+The following argument works for infinite extensions,
+though we will mostly be interested in finite extensions.
+\begin{proof}
+  Let $B_L \subseteq L$ be a $\io_L$-basis and 
+  $B_N \subseteq N$ a $\io_N$-basis. 
+  The claim is that $B_L B_N := \{ a b \,|\, a \in B_L, b \in B_N\}$
+  is a $(\io_N \circ \io_L)$-basis of $N$ and has cardinality $B_L \times B_N$.
+
+  (Cardinality) Let $(a_1, b_1), (a_2, b_2) \in B_L \times B_N$
+  such that $ a_1 b_1 = a_2 b_2$. 
+  This is then a non-trivial $L$-linear combination of elements in $B_N$,
+  contradicting linear independence of $B_N$.
+  The cardinality is thus as desired. 
+
+  (Linear Independence) 
+  Let $\sum_{(a, b) \in B_L \times B_N} \la_{a,b} a b = 0$
+  where $\la_{a,b} \in K$ and only finitely many are non-zero. 
+  Then we have 
+  $\sum_{b \in B_N} \left(\sum_{a \in B_L} \la_{a,b} a\right) b = 0$,
+  giving $\sum_{a \in B_L} \la_{a,b} a = 0$ by linear independence of $B_N$,
+  which in turn gives $\la_{a,b} = 0$ by linear independence of $B_L$.
+  
+  (Spanning) 
+  Let $x \in N$. 
+  Since $B_N$ is spanning, we have $\sum_{b \in B_N} \la_b b = x$ 
+  for some $\la_b \in L$, finitely many non-zero. 
+  Then since $B_L$ is spanning, 
+  we have $\sum_{a \in B_L} \mu_{a,b} a = \la_b$ for each $b \in N_B$, 
+  where $\mu_{a,b} \in K$, finitely many non-zero. 
+  So $\sum_{(a,b) \in B_L \times B_N} \mu_{a, b} a b = x$ as desired. 
+\end{proof}
+
+\begin{eg}
+  Now we can show $\om \notin \bQ(\al_0)$ from the previous section.
+  We have $3 = [\bQ(\al_0) : \bQ] = [\bQ(\al_0) : \bQ(\om)] [\bQ(\om) : \bQ]
+  = [\bQ(\al_0) : \bQ(\om)] 2$ which is a contradiction because 2 does not
+  divide 3.
+\end{eg}
+
+\begin{dfn}
+  
+  Let $K \to L$ be a field extension.
+  For $A \subs L$, define $K(A) \subs L$ as the smallest
+  subfield of $L$ containing the image of $K$ and $A$.
+  We say $K \to L$ is finite type when 
+  there exists finite $A \subs L$ with $L = K(A)$.
+  In the case of $A = \set{a}$, we write $K(a)$.
+  We call extensions of the form $K \to K(a)$ simple.
+
+  Given $a \in L$, one can consider the evaluation 
+  ring morphism \[
+    \ev_a : K[T] \to L , f(T) \mapsto f(a)
+  \]
+  We say $a$ is \emph{algebraic over $K$} when
+  there exists a non-zero $f$ with $f(a) = 0$,
+  i.e. $0 \neq \ker \ev_a$.
+  
+  We say $K \to L$ is algebraic when
+  all $a \in L$ is algebraic over $K$.
+\end{dfn}
+
+\begin{prop}[\link{char_ext_simp}{Characteristization of finite simple extensions}]
+  Let $K \to L$ be an extension and $a \in L$.
+  Then the following are equivalent : 
+  \begin{enumerate}
+    \item $a$ is algebraic over $K$
+    \item $[K(a) : K]$ is finite
+    \item $K \to K(a)$ is algebraic.
+  \end{enumerate}
+\end{prop}
+\begin{proof}
+  ($1 \implies 2$) 
+  We saw in section 1 how to compute $K(a)$.
+  Specifically, consider the evaluation map $K[T] \to L , f \mapsto f(a)$
+  and let $K[a]$ be its image.
+  By assumption, there exists non-zero $f \in K[T]$ with $f(a) = 0$.
+  WLOG $\deg f = N \geq 0$.
+  Then $1 , a , \dots, a^{N-1}$ is a $K$-spanning set for $K[a]$.
+  This implies $K[a]$ is a finite dimensional $K$-vector space
+  and hence a field and hence $K[a] = K(a)$.
+
+  ($2 \implies 3$)
+  Let $b \in K(a)$.
+  Since $[K(a) : K]$ is finite,
+  there exists a non-trivial linear combination
+  $0 = \sum_{n \geq 0} \la_n b^n$ with $\la_n \in K$,
+  which implies $b$ is algebraic over $K$.
+
+  ($3 \implies 1$) trivial.
+\end{proof}
+
+\begin{prop}[\link{char_ext_fin}{Characteristization of finite extensions}]
+  
+  Let $K \to L$ be an extension.
+  The following are equivalent : 
+  \begin{enumerate}
+    \item $[L : K]$ is finite
+    \item $K \to L$ is finite type and algebraic 
+    \item There exists finite $A \subs L$ such that $L = K(A)$ and
+    all $a \in A$ are algebraic.
+  \end{enumerate}
+\end{prop}
+\begin{proof}
+  ($1 \implies 2$) Take a $K$-basis and use \linkto{char_ext_simp}{
+    the characterization of finite simple extensions
+  }.
+  ($2 \implies 3$) Clear.
+  ($3 \implies 1$)
+  Induct on the size of $A$ and use 
+  \linkto{char_ext_simp}{
+    the characterization of finite simple extensions
+  }.
+
+\end{proof}
+
+We are now ready for the main result of this section.
+
+\begin{prop}[Embedding theorem for finite simple extensions]
+  
+  Let $K \to L$ be an extension and $a \in L$ algebraic over $K$.
+  The ideal $\ker \ev_a \subs K[T]$ is generated by a unique
+  monic polynomial.
+  We call it the \emph{minimal polynomial of $a$ over $K$},
+  denoted $\min(a , K)$.
+  Let $K \to N$ be another extension.
+  Then we have a bijection \[
+    \EMB_K(K(a) , N) \simeq \set{b \in N \st \min(a , K) = \min(b , K)},
+    \varphi \mapsto \varphi(a)
+  \]
+  In particular, $\abs{\EMB_K(K(a) , N)} \leq [K(a) : K]$.
+  Elements $b \in N$ with $\min(b , K) = \min(a , K)$ are called 
+  \emph{Galois conjugates of $a$}.
+
+\end{prop}
+\begin{proof}
+  We saw $K(a) = K[a] \simeq K[T]/(\min(a , K))$.
+  Given $\varphi : K(a) \to N$ a $K$-embedding,
+  the composition $K[T] \to K(a) \to N$ is $\ev_{\varphi(a)}$.
+  Since $K(a) \to N$ is injective, we have $\ker \ev_{\varphi(a)} = \ker \ev_a$.
+  It follows that $\min(\varphi(a) , K) = \min(a , K)$.
+  Conversely, given $b \in N$ a Galois conjugate of $a$ we can define the
+  $K$-embedding $K(a) \simeq K[T] / (\min(a , K)) = K[T] / (\min(b , K))
+  \simeq K(b) \subs N$.
+\end{proof}
+
+We will now generalise the above to general finite extensions.
+For this, we need to know how embeddings from subextensions
+interact with the whole extension.
+
+\begin{prop}[Subextensions partition embeddings]
+  
+  Let $K \to L \to M$ and $K \to N$ be extensions.
+  Then we have a bijection \[
+    \bigsqcup_{\io \in \EMB_K(L , N)} \EMB_L(M , N) \map{\sim}{} \EMB_K(M , N)
+  \]
+  by sending $(L \to N \in \EMB_K(L , N) , M \to N \in \EMB_L(M , N))$
+  to $M \to N$ viewed as a $K$-embedding.
+\end{prop}
+\begin{proof}
+  The point is that we have a map $\EMB_K(M , N) \to \EMB_K(L , N)$
+  and the fibers over each $\io : L \to N$ is precisely
+  the set of $L$-embeddings $M \to N$ where $N$ is viewed as
+  an $L$-extension by $\io : L \to N$.
+\end{proof}
+
+\begin{prop}[Embedding theorem for finite extensions]
+  
+  Let $K \to L$ be an extension and $A \subs L$ finite set of algebraic
+  generators for $L$ over $K$.
+  Let $K \to N$ be another extension and assume that
+  for all $a \in A$ the minimal polynomial $\min(a , K)$ splits
+  into linear factors in $N[T]$.
+  Then \[
+    0 < \abs{\EMB_K(L , N)} \leq [L : K]
+  \]
+  and we have equality if for all $a \in A$ the polynomial $\min(a , K)$
+  has no \emph{repeated} roots in $N$. 
+\end{prop}
+\begin{proof}
+  Induct on the cardinality of $A$.
+  $A = \nothing$ is trivial so let $a_0 \in A$ and 
+  $M := K(A \setminus \set{a_0})$ and assume inductively
+  $0 < \EMB_K(M , N) \leq [M : K]$ with equality if
+  all for all $a_1 \in A\setminus\set{a_0}$ 
+  we have $\min(a_1 , K)$ with no repeated roots
+  in $N$.
+  Then $L = M(a_0)$.
+  We have $\min(a_0, M)$ divides $\min(a_0, K)$ in $M[T]$,
+  so $\min(a_0 , M)$ also splits into linear factors in $N[T]$.
+  It follows from 
+  \linkto{char_ext_simp}{the characterization of finite simple extensions}
+  and the tower law
+  that
+  \[
+    0 < \abs{\EMB_K(L , N)}
+    = \sum_{\EMB_K(M , N)} \abs{\EMB_M(L , N)}
+    \leq \sum_{\EMB_K(M , N)} [L : M]
+    \leq [L : M] [M : K] = [L : K]
+  \]
+  Now assume all $\min(a , K)$ for $a \in A$ split into linear factors in $N$.
+  This implies $\min(a_0 , M)$ splits into linear factors in $N$
+  so $\abs{\EMB_M(L , N)} = [L : M]$.
+  Then the first $\leq$ is an equality and the second is also
+  by the induction hypothesis on $M$.
+
+\end{proof}
+
+\section{Normal and separable extensions}
+
+Given an extension $K \to L = K(a_1 , \dots , a_n)$
+with $a_i$ algebraic over $K$,
+the embedding theorem for finite extensions tells us
+how to construct automorphisms of $L$ over $K$.
+For the main theorem of Galois theory to hold true,
+we need to have the maximum number of automorphisms,
+i.e. $\abs{\AUT_K L} = [L : K]$.
+The embedding theorem indicates two ways in which this can fail : 
+\begin{enumerate}
+  \item the polynomials $\min(a_i , K)$ do not split into
+  linear factors in $L[X]$
+  \item there exists some $a_i$ such that
+  $\min(a_i , K)$ has a repeated root in $L$.
+\end{enumerate}
+These two phenomena are respectively called normality and separability.
+Let us illustrate the failure of normality
+by focusing on the extension
+$\bQ \to \bQ(\al_0)$ from the first section.
+Using the embedding theorem for finite simple extensions,
+we see that $\si \in \EMB_\bQ(\bQ(\al_0) , \bQ(\al_0))$
+correspond to solutions of $T^3 - 2$ in $\bQ(\al_0)$.
+There is only $\al_0$:
+If there is another root $\tilde{\al_1}$ then
+$\tilde{\om} := \tilde{\al_1} / \al_0$ would be a primitive
+cube root of unity and $[\bQ(\tilde{\om}) : \bQ] = 2$
+which we cannot have as we saw before.
+From this, we can see the problem is that 
+$\bQ(\al_0) / \bQ$ does not contain
+\emph{all} the roots of the polynomial $T^3 - 2$.
+More precisely, $T^3 - 2$ does not factorise into linear factors
+in $\bQ(\al_0)[T]$.
+We can also see this phenomenon in the following way : 
+there are three ways of $\bQ$-embedding $\bQ(\al_0)$ inside 
+$\bQ(\al_0 , \al_1 , \al_2)$ corresponding to each $\bQ(\al_i)$
+and their images are \emph{different}.
+
+\begin{dfn} [\link{dfn:normal}{Normal Extension}] 
+  
+  Let $K \to L$ be an extension and $f \in K[X]$. 
+  Then we say \emph{$L$ splits $f$} when 
+  $f$ factorises into linear factors in $L[X]$. 
+
+  Suppose $L/K$ is algebraic. 
+  Then it is called \emph{normal} when for all $a \in L$,  
+  it contains all the Galois $K$-conjugates of $a$,
+  i.e. $L$ splits $\min(a,K)$. 
+\end{dfn}
+
+\begin{prop} [\link{thm:split}
+  {Splitting Polynomials}]
+  
+  Let $K$ be a field and $f \in K[X] \setminus K$.
+  Then there exists an extension $K \to L$ such that
+  $f$ has a root in $L$. 
+  In particular, there exists a $K$-extension that splits $f$. 
+\end{prop}
+\begin{proof}
+  Since $f$ is non-constant and $K[X]$ is a UFD, 
+  there exists an irreducible $f_1$ that divides $f$.
+  Let $L = K[X] / (f_1)$. 
+  Then since $f_1$ is irreducible and $K[X]$ is a PID, 
+  $L$ is a field and thus a $K$-extension. 
+  Note that the image of the monomial $X$ in $L$ is a root of $f_1$,
+  and hence a root of $f$.  
+  To split $f$, use the above procedure to 
+  inductively construct a desired extension.
+\end{proof}
+
+\begin{prop} [\link{thm:char_normal}
+  {Characterisation of Finite Normal Extensions}]
+  
+  Let $K \to L$ be a finite extension.
+  Then the following are equivalent : 
+  \begin{enumerate}
+    \item (Contains all Galois $K$-Conjugates) $K \to L$ normal. 
+    \item (Contains all Galois $K$-Conjugates of Generators) 
+    There exists $A \subseteq L$ a finite set of generators of $K \to L$
+    such that for all $a \in A$, 
+    $a$ is algebraic over $K$ and $L$ splits $\min(a,K)$. 
+    \item (is a Splitting Field) 
+    There exists a polynomial $f \in K[X]$ such that
+    $L$ splits $f$ and is generated by the roots of $f$ in $L$.
+    \item (Image Invariance) For all extensions $K \to N$
+    and two $\io_0, \io_1 \in \emb{K}{L}{N}$, 
+    $\io_0 L = \io_1 L$.
+  \end{enumerate}
+\end{prop}
+\begin{proof} $(1 \implies 2 \implies 3)$ is clear. 
+
+  $(3 \implies 4)$ The key is that roots of $f$ remain roots of $f$
+  under $K$-embeddings. 
+  Let $f(X) = \prod_{k = 1}^{\deg f} (X - a_k) \in L[X]$.
+  where $a_k \in L$.
+  Then $f(X) = \prod_{k = 1}^{\deg f} (X - \io_0(a_k)) \in N[X]$
+  For all $a_l$, since $\io_1$ fixes $K$ we get
+  \[
+    0 = \io_1(f(a_l)) = f(\io_1(a_l))
+    = \prod_{k = 1}^{\deg f} (\io_1(a_l) - \io_0(a_k))
+  \]
+  so there exists $a_k$ such that $\io_1(a_l) = \io_0(a_k)$.
+  Since $L = K(a_1,\dots,a_{\deg f})$, 
+  this shows that $\io_1 L \subseteq \io_0 L$
+  and by symmetry $\io_0 L \subseteq \io_1 L$ as well. 
+
+  $(4 \implies 1)$ Let $a \in L$. 
+  Since $(L,\io_L)$ is finite, $\min(a,K)$ exists.
+  We do not know if $L$ splits $\min(a,K)$,
+  but there exists an extension $L \to M$ such that 
+  $M$ splits $\min(a,K)$.
+  We seek to show that all Galois $K$-conjugates of $a$ in $M$ 
+  are actually in (the image of) $L$ already.
+  So let $\al \in M$ be a Galois $K$-conjugate of $a$. 
+  We have the following situation. 
+  \begin{figure} [H]
+    \centering
+    \begin{tikzcd}
+      K \arrow["\io_L",r] & 
+      K(a) \arrow["\subseteq",r] \arrow["\phi_\al",rd] & 
+      L \arrow["\io_M",d]\\
+      & & M
+    \end{tikzcd}
+  \end{figure}
+  By the \linkto{lem:embed_simp}{embedding theorem for finite simple extensions}, 
+  there exists $\phi_\al \in \emb{K}{K(a)}{M}$
+  that maps $a \mapsto \al$. 
+  Suppose we have an $\io_1 \in \emb{K(a)}{L}{\phi_\al}$.
+  Then certainly $\io_1 \in \emb{K}{L}{\io_M \circ \io_L}$. 
+  Also, trivially $\io_M \in \emb{K}{L}{\io_M \circ \io_L}$. 
+  So $\io_1 L = \io_M L$ implies $\al \in \io_M L$ as desired. 
+  It thus suffices to give an $\io_1 \in \emb{K(a)}{L}{\phi_\al}$. 
+  Well, since $(L,\io_L)$ is finite, it is also a finite $K(a)$-extension, 
+  so it is generated by some finite subset $B$
+  whose elements are all algebraic over $K(a)$. 
+  Then we can extend $M$ so that it splits all $\min(b,K(a))$ for $b \in B$. 
+  Thus by the \linkto{thm:embed}{embedding theorem}, 
+  we have an $\io_1 \in \emb{K(a)}{L}{\phi_\al}$. 
+\end{proof}
+
+Now let us discuss separability.
+As we will see,
+existence of inseparable irreducible polynomials
+is linked with the \emph{characteristic} of the base field $K$.
+This implies that 
+in terms of finding an insolvable quintic over $\bQ$,
+the problem of inseparable minimal polynomials never happens.
+
+\begin{dfn} [\link{dfn:sep_poly}
+  {Formal Derivative, Separable Polynomial, Separable extension}]
+  
+  Let $K$ be a field and $f = \sum_{0 \leq n} f_n X^n \in K[X]$. 
+  Then the \emph{formal derivative of $f$} is defined to be 
+  $f^\prime = \sum_{0 < n} n f_n X^{n-1}$. 
+
+  $f$ is said to be \emph{separable} when 
+  for all $K$-extensions in which $f$ splits, $f$ has no repeated roots. 
+  If otherwise, $f$ is called \emph{inseparable}. 
+  An algebraic extension $K \to L$ is called 
+  separable when for all $a \in L$,
+  the polynomial $\min(a , K)$ is separable.
+\end{dfn}
+
+To give an example of an inseparable extension,
+we need to discuss the notion of the characteristic of a field.
+
+\begin{dfn} [\link{dfn:char_field}
+  {Characteristic of a Field}] 
+  
+  Let $K$ be a field. 
+  $\bZ$ is generated by $1$ and ring morphisms must preserve $1$, 
+  so there is a unique ring morphism $\bZ \to K$.
+  Its image is an ID since $K$ is an ID.
+  So by $\bZ$ PID, its kernel is generated by either zero or a (positive) prime. 
+  This is defined as the \emph{characteristic of $K$},
+  denoted $\Char{K}$.
+
+  More generally, the characteristic of any integral domain $A$
+  is defined in the same way.
+\end{dfn}
+
+\begin{eg}
+  All fields $K$ of characteristic 0 have a unique 
+  extension map $\bQ \to K$.
+  Similarly, all fields $K$ of characteristic $p > 0$
+  have a unique extension map $\bF_p \to K$.
+\end{eg}
+
+The following is the root of all interesting phenomena
+in positive characteristic.
+
+\begin{prop}[Freshman's dream]
+  
+  Let $A$ be an integral domain of characteristic $p > 0$
+  and $a , b \in A$.
+  Then $(a + b)^p = a^p + b^p$
+\end{prop}
+\begin{proof}
+  The point is that the binomial coefficient 
+  $\begin{pmatrix}
+    p \\ k
+  \end{pmatrix}$
+  for $0 < k < p$ is divisible by $p$.
+\end{proof}
+
+\begin{eg}
+  Consider $K = \bF_p(T) := \mathrm{Frac}\,\bF_p[T]$
+  and the polynomial $f(X) = X^p - T \in K[X]$.
+  Then by Eisenstein's criterion $f$ is irreducible.
+  Let $L := K[X] / (f)$ and $T^{1 / p}$ the image of $X$ in $L$.
+  Then in $L[X]$ we have by Freshman's dream \[
+    f(X) = X^p - T = X^p - (T^{1 / p})^p
+    = (X - T^{1 / p})^p
+  \]
+  So $f$ is inseparable.
+\end{eg}
+
+% \begin{prop} [\link{thm:char_insep_irr_poly}
+%   {Characterisation of Inseparable Irreducible Polynomials}]
+  
+%   Let $K$ be a field and $f \in K[X]$ irreducible. 
+%   Then the following are equivalent : 
+%   \begin{enumerate}
+%     \item (Repeated Root) $f$ is inseparable. 
+%     \item (Intrinsic Definition) $(f,f^\prime) \neq 1$.
+%     \item (Another Intrinsic Definition) $f^\prime = 0$.
+%     \item (Characteristic Non-zero) 
+%     $\Char{K} = p \neq 0$ and 
+%     there exists an irreducible separable $g \in K[X]$ with $n > 0$ such that 
+%     $f(X) = g(X^{p^n})$. 
+%     \item (All Roots Repeated) There exists a $K$-extension in which 
+%     $f$ splits and all its roots are repeated. 
+%   \end{enumerate}
+% \end{prop}
+% \begin{proof}
+%   ($1 \implies 2$) Suppose $(f , f^\prime) = 1$.
+%   Then by the Euclidean algorithm there exists
+%   $\la, \mu \in K[X]$ such that $\la f + \mu f^\prime = 1$.
+%   Let $K \to L$ be an extension where $f$ has a repeated root $a$.
+%   By factoring $f(X) = (X - a)^2 g(X)$ in $L[X]$ and the product rule
+%   for formal differentiation (which can be proved by induction),
+%   we see a contradiction \[
+%     1 = \la(a) f(a) + \mu(a) f^\prime(a) = 0 + 0 = 0
+%   \]
+
+%   ($2 \implies 3$) 
+%   If $f^\prime \neq 0$ then since $(f , f^\prime) \neq 1$
+%   and $f$ is irreducible, we must have that
+%   $f$ divides $f^\prime$.
+%   But then $\deg f \leq \deg f^\prime < \deg f$
+%   so we must have $f^\prime = 0$.
+
+%   ($3 \implies 4$)
+%   We do induction on $\deg f$.
+%   By rescaling, WLOG assume $f$ is monic.
+%   Then looking at the leading coefficient of $f^\prime$,
+%   we see that $\deg f = 0$ as elements inside $K$.
+%   Since $\deg f > 0$ we have that $\Char{K} = p > 0$ for some prime $p$.
+%   Writing $f(X) = \sum_{k \geq 0} f_k X^k$
+%   and looking at $f^\prime = 0$,
+%   we see that for every $f_k \neq 0$ we must have $k = 0$ in $K$.
+%   In other words $k = p k_p$ for some $k_p \in \bN$.
+%   Letting $g(X) = \sum_{k \geq 0} f_k X^{k_p}$ we get
+%   $f(X) = g(X^p)$.
+%   If $g$ is reducible then $f$ is reducible 
+%   so we must have $g$ is irreducible.
+%   If $g$ is separable, we are done.
+%   If $g$ is inseparable,
+%   then using $(1 \implies 3)$ we have $g^\prime = 0$.
+%   Since $\deg g < \deg f$ we are done by induction.
+
+%   ($4 \implies 5$)
+%   Let $K \to L$ with $g(X) = (X - a_1) \dots (X - a_d)$ in $L[X]$.
+%   We can extend $L$ further to split the polynomials
+%   $X^{p^n} - a_i$.
+%   Let $b_i \in L$ such that $b_i^{p^n} = a_i$.
+%   Then by Freshman's dream 
+%   \[
+%     f(X) = (X^{p^n} - a_1) \dots (X^{p^n} - a_d)
+%     = (X^{p^n} - b_1^{p^n}) \dots (X^{p^n} - b_d^{p^n})
+%     = (X - b_1)^{p^n} \dots (X - b_d)^{p^n}
+%   \]
+
+%   ($5 \implies 1$) clear.
+% \end{proof}
 
 \section{Galois extensions and the fundamental theorem}
+
+\begin{dfn}
+  An extension $K \to L$ is called Galois
+  when there exists a finite subgroup $G \subs \AUT_K L$
+  such that $K = L^G$.
+\end{dfn}
+
+\begin{prop}[Characterization of Galois extensions]
+  Let $K \to L$ be an extension.
+  Then $K \to L$ is finite, normal, separable
+  iff $K \to L$ is Galois.
+  In this case $K = L^{\AUT_K L}$ and $\abs{\AUT_K L} = [L : K]$.
+\end{prop}
+\begin{proof}
+  ($1 \implies 2$)
+  By the embedding theorem, $\abs{\AUT_K L} \leq [L : K]$.
+  We claim that $G := \AUT_K L$ works.
+  Let $a \in L^G$. Goal : $a \in K$.
+  Since $K \to L$ is normal, $\min(a, K)$ splits in $L$.
+  It suffices to show it is linear.
+  Since $K \to L$ is separable, it suffices to show
+  that any Galois $K$-conjugate $\al \in L$ of $a$
+  we have $\al = a$.
+  Let $\al \in L$ with $\min(a , K)(\al) = 0$.
+  Since $a \in L^G$ is suffices to give $\si \in \AUT_K L$
+  which $\si(a) = \al$.
+  By the embedding theorem applied to $K(a) \to L$,
+  we can extend $K(a) \simeq K(\al) \to L$ to an automorphism
+  $\si : L \to L$ preserving $K$.
+  This maps $a$ to $\al$ as desired.
+
+  ($2 \implies 1$) More tricky.
+
+\end{proof}
 
 \section{Cyclotomic extensions, Kummer extensions, Radical extensions}
 
