@@ -765,11 +765,7 @@ in terms of finding an insolvable quintic over $\bQ$,
 the problem of inseparable minimal polynomials never happens.
 
 \begin{dfn} [\link{dfn:sep_poly}
-  {Formal Derivative, Separable Polynomial, Separable extension}]
-  
-  Let $K$ be a field and $f = \sum_{0 \leq n} f_n X^n \in K[X]$. 
-  Then the \emph{formal derivative of $f$} is defined to be 
-  $f^\prime = \sum_{0 < n} n f_n X^{n-1}$. 
+  {Separable Polynomial, Separable extension}]
 
   $f$ is said to be \emph{separable} when 
   for all $K$-extensions in which $f$ splits, $f$ has no repeated roots. 
@@ -778,6 +774,40 @@ the problem of inseparable minimal polynomials never happens.
   separable when for all $a \in L$,
   the polynomial $\min(a , K)$ is separable.
 \end{dfn}
+
+\begin{prop}[Characterization of separable polymomials using differentials]
+  
+  Let $K$ be a field and $f = \sum_{0 \leq n} f_n X^n \in K[X]$. 
+  The \emph{formal derivative of $f$} is defined to be 
+  $f^\prime = \sum_{0 < n} n f_n X^{n-1}$. 
+  Then $f$ is separable iff $(f , f^\prime) = 1$.
+\end{prop}`'
+\begin{proof}
+  We will prove $f$ is inseparable iff $(f , f^\prime) \neq 1$.
+  Assume $f$ is inseparable.
+  Suppose $(f , f^\prime) = 1$.
+  Then by the Euclidean algorithm there exists
+  $\la, \mu \in K[X]$ such that $\la f + \mu f^\prime = 1$.
+  Let $K \to L$ be an extension where $f$ has a repeated root $a$.
+  By factoring $f(X) = (X - a)^2 g(X)$ in $L[X]$ and the product rule
+  for formal differentiation (which can be proved by induction),
+  we see a contradiction \[
+    1 = \la(a) f(a) + \mu(a) f^\prime(a) = 0 + 0 = 0
+  \]
+  Now assume $(f , f^\prime) \neq 1$.
+  Let $h \in K[X]$ be the GCD of $f$ and $f^\prime$,
+  which is non-constant by assumption.
+  Let $K \to L$ be any extension that splits $f$.
+  It also splits $h$.
+  Let $a \in L$ with $h(a) = 0$.
+  We can write $f(X) = (X - a)^d g(X)$ in $L[X]$ for some $d \geq 0$
+  and $g(a) \neq 0$.
+  Since $h$ divides $f$ we have $f(a) = 0$ so $d \geq 1$.
+  Suppose $d = 1$.
+  We also have $h$ divides $f^\prime$ yielding a contradiction \[
+    0 = f^\prime(a) = g(a) \neq 0
+  \]
+\end{proof}
 
 To give an example of an inseparable extension,
 we need to discuss the notion of the characteristic of a field.
@@ -831,7 +861,25 @@ in positive characteristic.
     = (X - T^{1 / p})^p
   \]
   So $f$ is inseparable.
+  Notice in that $f^\prime = 0$ so indeed $(f , f^\prime) \neq 1$.
 \end{eg}
+
+In fact, we cannot have inseparable extensions in characteristic zero.
+
+\begin{prop}
+  Let $K$ be characteristic zero.
+  Then any irreducible $f \in K[T]$ is separable.
+\end{prop}
+\begin{proof}
+  $f^\prime$ is either zero or has degree strictly less than $f$.
+  WLOG $f$ is monic.
+  Then $0 = f^\prime$ implies by looking at the leading coefficient,
+  $0 = \deg f$ as elements of $K$,
+  contradicting the characteristic of $K$ being zero.
+  So $f^\prime \neq 0$.
+  But then we must have $(f , f^\prime) = 1$ because
+  $\deg f^\prime < \deg f$ implies $f$ cannot divide $f^\prime$.
+\end{proof}
 
 % \begin{prop} [\link{thm:char_insep_irr_poly}
 %   {Characterisation of Inseparable Irreducible Polynomials}]
