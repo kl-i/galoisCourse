@@ -781,7 +781,7 @@ the problem of inseparable minimal polynomials never happens.
   The \emph{formal derivative of $f$} is defined to be 
   $f^\prime = \sum_{0 < n} n f_n X^{n-1}$. 
   Then $f$ is separable iff $(f , f^\prime) = 1$.
-\end{prop}`'
+\end{prop}
 \begin{proof}
   We will prove $f$ is inseparable iff $(f , f^\prime) \neq 1$.
   Assume $f$ is inseparable.
@@ -962,18 +962,32 @@ In fact, we cannot have inseparable extensions in characteristic zero.
   Let $K \to L$ be an extension.
   Then $K \to L$ is finite, normal, separable
   iff $K \to L$ is Galois.
-  In this case $K = L^{\AUT_K L}$ and $\abs{\AUT_K L} = [L : K]$.
+  In this case the finite subgroup $G$ such that $K = L^G$
+  must be $\AUT_K L$.
 \end{prop}
+
+% To give an idea of the proof, let us look at an example first.
+
+% \begin{eg}
+  
+%   Let $K = \bQ(\om)$ where $\om^2 + \om + 1 = 0$
+%   and consider the polynomial $f(T) = T^3 - 2 \in K[T]$.
+%   This is irreducible because it's a cubic and has no roots in $\bQ(\om)$
+%   due to $[\bQ(\om) : \bQ] = 2$.
+%   Let $L := K[T] / (T^3 - 2)$ and $\al :=$ the image of $T$ in $L$.
+
+
+% \end{eg}
+
 \begin{proof}
   ($1 \implies 2$)
   By the embedding theorem, $\abs{\AUT_K L} \leq [L : K]$.
   We claim that $G := \AUT_K L$ works.
   Let $a \in L^G$. Goal : $a \in K$.
+  It suffices to show $\min(a , K)$ is linear.
   Since $K \to L$ is normal, $\min(a, K)$ splits in $L$.
-  It suffices to show it is linear.
-  Since $K \to L$ is separable, it suffices to show
-  that any Galois $K$-conjugate $\al \in L$ of $a$
-  we have $\al = a$.
+  Since $K \to L$ is separable, it suffices to show that 
+  for any Galois $K$-conjugate $\al$ of $a$ we have $\al = a$.
   Let $\al \in L$ with $\min(a , K)(\al) = 0$.
   Since $a \in L^G$ is suffices to give $\si \in \AUT_K L$
   which $\si(a) = \al$.
@@ -982,9 +996,287 @@ In fact, we cannot have inseparable extensions in characteristic zero.
   $\si : L \to L$ preserving $K$.
   This maps $a$ to $\al$ as desired.
 
-  ($2 \implies 1$) More tricky.
+  ($2 \implies 1$) Let $G$ be a finite subgroup of $\AUT_K L$
+  such that $K = L^G$.
+  For $a \in L$ we claim that \[
+    \min(a , K)(T) = \prod_{\al \in G a} (T - \al) \in L[T]
+  \]
+  where $G a$ denotes the $G$-orbit of $a$.
+  This proves that $L/K$ is normal and separable.
+  Let $f \in L[T]$ be the above product.
+  The claim is equivalent to showing $f \in L^G[T] = K[T]$
+  and $f$ is irreducible in $K[T]$.
+  Let $\si \in G$. Then \[
+    \si f (T) = \si \prod_{\al \in G a} (T - \al)
+    = \prod_{\al \in G a} (T - \si(\al))
+    = \prod_{\tilde{\al} \in G a} (T - \tilde{\al})
+    = f(T)
+  \]
+  Therefore $f \in K[T]$.
+  For irreducibility, if $f = g h$ is a non-trivial factoring in $K[T]$
+  then one of $g$ or $h$ has $a$ as a root.
+  Say it's $g$, then by applying $\si \in G$ to the equation $0 = g(a)$
+  we get that $g$ has all $\al \in G a$ as roots,
+  i.e. $f$ divides $g$, a contradiction.
+
+  Now we show $L / K$ is finite.
+  We are expecting $G = \AUT_K L$ which should have size $[L : K]$.
+  So we will bound $[L : K] \leq \abs{G}$.
+  Magic claim : 
+  $\dim_K L = \dim_L L[G] = \abs{G}$
+  where $L[G]$ is the set of functions from $G$ to $L$.
+  It will suffice for us to show that
+  any $K$-linearly independent set gives rise to
+  a $L$-linearly independent set in $L[G]$ with the same cardinality.
+  Let $A \subseteq L$ be a finite $K$-linearly independent set.
+  Claim : $\set{\ev_a}_{a \in A}$ is a $L$-linearly independent set in $L[G]$.
+  We induct on $\abs{A}$.
+  Let $\sum_{x \in X_0} \la_x ev_x = 0$ with $\la_x \in L$. 
+  Suppose for a contradiction 
+  that there exists $a_0 \in A$ such that $\la_{a_0} \neq 0$. 
+  It suffices to show for all $a \in A$
+  we have $\la_a \in L^G = K$,
+  for then by evaluating at $e \in G$ gives 
+  $0 = \sum_{a \in A} \la_a a$,
+  implying all $\la_a = 0$. 
+  So let $\sigma \in G$ with the goal of showing $\si(\la_a) = \la_a$ for
+  all $a \in A$.
+  By rescaling, WLOG $\la_{a_0} = 1$. 
+  By induction it suffices to show \[
+    \sum_{x \in X_0 \setminus\{x_0\}} (\la_x - \sigma(\la_x)) ev_x
+    = 0 \in L[G]
+  \]
+  Let $\rho \in G$. Then we have as desired
+  \begin{align*}
+    \sum_{a \in A \setminus\{a_0\}} (\la_a - \sigma(\la_a)) ev_a (\rho)
+    &= \sum_{x \in X_0} \la_x ev_x (\rho) - 
+    \sum_{a \in A} \si(\la_a) \rho(a)
+    \\
+    = - \sigma \left( 
+        \sum_{a \in A} \la_a \si^{-1}\rho(a)
+      \right)
+    &= - \si\left(
+      \left(
+        \sum_{a \in A} \la_a \ev_a
+      \right) \si^{-1}\rho
+    \right)
+    = 0 
+  \end{align*}
+\end{proof}
+
+\begin{prop}[Fundamental theorem of Galois theory]
+
+  Let $K \to L$ be a Galois extension of fields
+  and let $G := \AUT_K L$.
+  Then we have an order reversing bijection \begin{cd}
+    {\set{\text{$K$-subextensions }E\subseteq L}} & 
+    {\set{\text{subgroups of }\mathrm{Aut}_K L}}
+    \arrow["{\mathrm{Aut}_\_ L}", shift left=3, from=1-1, to=1-2]
+    \arrow["\simeq"{description}, draw=none, from=1-1, to=1-2]
+    \arrow["{L^\_}", shift left=3, from=1-2, to=1-1]
+  \end{cd}
+  Furthermore, for $E \subs L$ a $K$-subextension 
+  we have the following : 
+  \begin{enumerate}
+    \item (Degree equals Index)
+    $[E : K] = [\AUT_{K}{L} : \AUT_{E}{L}]$.
+    \item (Group Action)
+    For all $\sigma \in \AUT_{K}{L}$, 
+    $\AUT_{\sigma E}{L} = \sigma \AUT_{E}{L} \sigma^{-1}$. 
+    \item (Normality) 
+    $E$ is a normal $K$-extension if and only if 
+    $\AUT_{E}{L}$ is a normal subgroup of $\AUT_{K}{L}$. 
+    In this case, we have the isomorphism 
+    $\AUT_{K}{E} \cong \AUT_{K}{L} / \AUT_{E}{L}$. 
+  \end{enumerate}
+\end{prop}
+\begin{proof}
+  We need a lemma. 
+  \begin{lem}
+    Let $K \to E \to L$ be a sequence of extensions.
+    \begin{enumerate}
+      \item If $K \to L$ is finite normal, then $E \to L$ is finite normal.
+      \item If $K \to L$ is finite separable, 
+      then $E \to L$ is finite separable.
+    \end{enumerate}
+    \begin{proof1}
+      Exercise.
+    \end{proof1}
+  \end{lem}
+  (Surjectivity) 
+  Let $H \subs \AUT_K L$ be a subgroup.
+  Then $\AUT_{L^H} L = H$ by the characterisation of Galois extensions.
+  Now let $E \subs L$ be a $K$-subextension.
+  Then by the above lemma, $L/E$ is Galois so $E = L^{\AUT_E L}$.
+
+  (Injectivity) This actually does not use any Galois theory
+  and is true for any partially ordered set.
+  Here is the statement.
+  \begin{lem}
+    Let $I, J$ be partially ordered sets,
+    $F : I \to J$ and $G : J \to I$ be order reversing functions
+    satisfying: 
+    \begin{itemize}
+      \item (Adjunction) For all $x \in I$ and $y \in J$,
+      $x \leq G(y)$ iff $y \leq G(x)$.
+    \end{itemize}
+    Then $FGF = F$ and $GFG = G$.
+    In particular, $F$ and $G$ induce a bijection on
+    the images $FI, GJ$.
+    \begin{proof1}
+      Exercise.
+    \end{proof1}
+  \end{lem}
+  (Degree equals index) Use the above lemma and 
+  the characterisation of Galois extensions.
+  
+  (Group action) Exercise.
+
+  (Normality)
+  If $E / K$ is normal,
+  then image-invariance of normal extensions we get a
+  well-defined morphism of groups by restriction \[
+    \AUT_K L \to \AUT_K E
+  \]
+  The kernel is by definition $\AUT_E L$ so it is normal.
+
+  If $\AUT_E L$ is normal,
+  then for any $\si \in \AUT_K L$ we have 
+  \[
+    \si E = L^{\AUT_{\si E} L}
+    = L^{\si \AUT_E L \si^{-1}}
+    = L^{\AUT_E L} = E
+  \]
+  so restriction gives a well-defined morphism of groups
+  $\AUT_K L \to \AUT_K E$.
+  Let $G$ be the image.
+  Then $E^G = E \cap L^{\AUT_K L} = E \cap L^G = E \cap K = K$
+  so $E / K$ is Galois and hence normal.
+  By the characterisation of Galois extensions,
+  $G$ must be all of $\AUT_K E$ and hence 
+  by the first isomorphism theorem of groups 
+  we have $\AUT_K E \simeq \AUT_K L / \AUT_E L$.
 
 \end{proof}
+
+\begin{eg}
+  
+  Let us compute the Galois group of 
+  $T^4 - a \in \bQ[T]$ over $K = \bQ$ where 
+  $a$ is a positive integer with no square factors.
+  
+  Let $p > 0$ be a prime that divides $a$.
+  Then $T^4 - a$ satisfies Eisenstein's criterion and hence is
+  irreducible in $\bQ[T]$.
+  Let $L / K$ be a splitting field of $T^4 - a$
+  and $\al \in L$ any root.
+  This is a Galois extension because $\bQ$ is characteristic zero.
+  By separability of $T^4 - a$,
+  there exists another root $\be$ not equal to $\pm \al$.
+  Let $i := \be / \al$.
+  Then $0 = i^4 - 1 = (i - 1)(i + 1)
+  (i^2 + 1)$
+  implies $i^2 + 1 = 0$.
+  So the four roots are $\al , \al i , \al i^2 , \al i^3$.
+
+  Let $\sqrt[4]{2} \in \bR$ be the unique positive fourth-root of $2$.
+  Using the embedding theorem,
+  there exists an embedding $\phi : L \to \bC$
+  such that $\phi(\al) = \sqrt[4]{2}$.
+  From this, we deduce $i \notin \bQ(\al)$ because
+  if it were it would give an element $\phi(i) \in \phi \bQ(\al) \subs \bR$
+  which is not fixed by complex conjugation.
+  It follows that $T^2 + 1$ is irreducible in $\bQ(\al)[T]$
+  and hence $[L : \bQ] = [L : \bQ(\al)] [\bQ(\al) : \bQ] = 2 \cdot 4 = 8$.
+  \footnote{
+    There should be a way to do this without using $\bR$ but
+    this is probably the easiest way.
+  }
+
+  Using embedding theorem for $L / \bQ(\al)$,
+  we get $\tau \in \AUT_\bQ L$ such that \begin{align*}
+    \tau(i) = -i && \tau(\al) = \al
+  \end{align*}
+  Since $\deg \min(\al , \bQ(i)) = [L : \bQ(i)] = 4$ by the tower law,
+  we have $\min(\al , \bQ(i)) = T^4 - 2$.
+  Using embedding theorem again, 
+  we have $\si \in \AUT_\bQ L$ such that \begin{align*}
+    \si(i) = i && \si(\al) = \al i
+  \end{align*}
+  We have $\si^k(\al) = \al i^k$ so $\si$ has order 4.
+  \begin{align*}
+    \tau \si \tau^{-1} (i) &= \tau \si (-i) = \tau(- i) = i \\
+    \tau \si \tau^{-1} (\al) &= \tau \si (\al) = 
+    \tau(\al i) = - \al i = \si^{-1}(\al)
+  \end{align*}
+  So $\tau \si \tau^{-1} = \si^{-1}$ and thus 
+  $\AUT_\bQ L \simeq D_8$.
+  We have the following classification of subgroups of $D_8$
+  \begin{cd}
+    && {\langle 1 \rangle} \\
+    {\langle \tau \rangle} & {\langle \tau \sigma^2 \rangle} & {\langle \sigma^2 \rangle} & {\langle \tau \sigma \rangle} & {\langle \tau \sigma^3 \rangle} \\
+    & {\langle \tau , \sigma^2 \rangle} & {\langle \sigma \rangle} & {\langle \tau \sigma , \sigma^2 \rangle} \\
+    && {\langle \sigma , \tau\rangle}
+    \arrow[from=1-3, to=2-1]
+    \arrow[from=1-3, to=2-2]
+    \arrow[from=1-3, to=2-3]
+    \arrow[from=1-3, to=2-4]
+    \arrow[from=1-3, to=2-5]
+    \arrow[from=2-1, to=3-2]
+    \arrow[from=2-2, to=3-2]
+    \arrow[from=2-3, to=3-2]
+    \arrow[from=2-3, to=3-3]
+    \arrow[from=2-3, to=3-4]
+    \arrow[from=2-4, to=3-4]
+    \arrow[from=2-5, to=3-4]
+    \arrow[from=3-2, to=4-3]
+    \arrow[from=3-3, to=4-3]
+    \arrow[from=3-4, to=4-3]
+  \end{cd}
+  The corresponding intermediate extensions are : 
+  \begin{cd}
+    && {\mathbb{Q}(\alpha, i)} \\
+    {\mathbb{Q}(\alpha)} & {\mathbb{Q}(\alpha i)} & {\mathbb{Q}(i , \alpha^2)} & {\mathbb{Q}(\alpha - i \alpha)} & {\mathbb{Q}(\alpha + i \alpha)} \\
+    & {\mathbb{Q}(\alpha^2)} & {\mathbb{Q}(i)} & {\mathbb{Q}(i \alpha^2)} \\
+    && {\mathbb{Q}}
+    \arrow[from=2-1, to=1-3]
+    \arrow[from=2-2, to=1-3]
+    \arrow[from=2-3, to=1-3]
+    \arrow[from=2-4, to=1-3]
+    \arrow[from=2-5, to=1-3]
+    \arrow[from=3-2, to=2-1]
+    \arrow[from=3-2, to=2-2]
+    \arrow[from=3-2, to=2-3]
+    \arrow[from=3-3, to=2-3]
+    \arrow[from=3-4, to=2-3]
+    \arrow[from=3-4, to=2-4]
+    \arrow[from=3-4, to=2-5]
+    \arrow[from=4-3, to=3-2]
+    \arrow[from=4-3, to=3-3]
+    \arrow[from=4-3, to=3-4]
+  \end{cd}
+  To compute fixed subfields $L^H$ of a given subgroup $H$ of $\AUT_\bQ L$,
+  one can use linear algebra:
+  Choose a $\bQ$-basis for $L$,
+  for each $\si \in H$
+  write the matrix $A$ given by the $K$-linear map $x \mapsto \si(x)$
+  and compute the kernel of $A - I$ where $I$ is the identity matrix.
+  Alternatively, one can check that it is invariant and then check the degree.
+  For example, $\tau\si(\al - i \al) = \tau(\al i + \al) = \al - \al i$
+  so $\bQ(\al - i \al) \subs L^{\< \tau \si \>}$.
+  \[
+    (\al - i \al)^4 = (- 2 i \al^2)^2 = - 4 a
+  \]
+  so $[\bQ(\al - i \al) : \bQ] \leq 4$.
+  On the other hand, if $i \in \bQ(\al - i \al)$ then
+  $\al = (\al - i \al + i (\al - i \al)) / 2$ implies
+  $L = \bQ(\al - i \al)$ which would imply $8 = [L : \bQ] \leq 4$
+  a contradiction.
+  Therefore $[L : \bQ(\al - i \al)] = 2$ and hence
+  $[\bQ(\al - i \al) : \bQ] = 4$.
+  Since $[L^{\< \tau \si \>} : \bQ] = [\< \si , \tau \> : \< \tau \si\>] = 4$
+  we conclude $\bQ(\al - i \al) = L^{\< \tau \si \>}$.
+\end{eg}
 
 \section{Cyclotomic extensions, Kummer extensions, Radical extensions}
 
