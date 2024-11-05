@@ -980,6 +980,8 @@ In fact, we cannot have inseparable extensions in characteristic zero.
 % \end{eg}
 
 \begin{proof}
+  Slogan : \emph{set of Galois conjugates = orbit}.
+
   ($1 \implies 2$)
   By the embedding theorem, $\abs{\AUT_K L} \leq [L : K]$.
   We claim that $G := \AUT_K L$ works.
@@ -1029,7 +1031,12 @@ In fact, we cannot have inseparable extensions in characteristic zero.
   any $K$-linearly independent set gives rise to
   a $L$-linearly independent set in $L[G]$ with the same cardinality.
   Let $A \subseteq L$ be a finite $K$-linearly independent set.
-  Claim : $\set{\ev_a}_{a \in A}$ is a $L$-linearly independent set in $L[G]$.
+  Define $\tilde{A} := \set{\ev_a}_{a \in A} \subs L[G]$.
+  Then $\ev_\_ : A \to \tilde{A}$ is a bijection
+  because $\ev_{a} = \ev_{a_1}$ implies
+  $a = \ev_a (e) = \ev_{a_1}(e) = a_1$ and surjectivity is by definition.
+  Claim : 
+  $\tilde{A}$ is a $L$-linearly independent set in $L[G]$.
   We induct on $\abs{A}$.
   Let $\sum_{x \in X_0} \la_x ev_x = 0$ with $\la_x \in L$. 
   Suppose for a contradiction 
