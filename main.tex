@@ -13,9 +13,9 @@
 
 \tableofcontents
 
-\section{The main theorem of Galois theory}
+\section{The Galois correspondence}
 
-We show an example of the fundamental theorem of Galois theory.
+We show an example of the Galois correspondence.
 Consider the polynomial $f(T) = T^3 - 2 \in \bQ[T]$.
 Let $\al_0 , \al_1 , \al_2 \in \bC$ be the roots of $f$.
 \[
@@ -243,7 +243,7 @@ To be more precise, we make some definitions.
 \end{dfn}
 The extension earlier $\bQ \subs \bQ(\al_0 , \al_1 , \al_2)$ was an example
 of a Galois extension.
-\begin{prop}[Fundamental theorem of Galois theory]
+\begin{prop}[The Galois correspondence]
 
   Let $K \to L$ be a Galois extension of fields
   and let $G := \AUT_K L$.
@@ -951,7 +951,7 @@ In fact, we cannot have inseparable extensions in characteristic zero.
 %   ($5 \implies 1$) clear.
 % \end{proof}
 
-\section{Galois extensions and the fundamental theorem}
+\section{Galois extensions and the correspondence}
 
 \begin{dfn}
   An extension $K \to L$ is called Galois
@@ -959,11 +959,13 @@ In fact, we cannot have inseparable extensions in characteristic zero.
   such that $K = L^G$.
 \end{dfn}
 
+The following is arguably the fundamental theorem of Galois theory.
+
 \begin{prop}[Characterization of Galois extensions]
   Let $K \to L$ be an extension.
   Then $K \to L$ is finite, normal, separable
   iff $K \to L$ is Galois.
-  In this case the finite subgroup $G$ such that $K = L^G$
+  In this case the finite subgroup $G \subs \AUT_K L$ such that $K = L^G$
   must be $\AUT_K L$.
 \end{prop}
 
@@ -1072,7 +1074,7 @@ In fact, we cannot have inseparable extensions in characteristic zero.
   \end{align*}
 \end{proof}
 
-\begin{prop}[Fundamental theorem of Galois theory]
+\begin{prop}[The Galois correspondence]
 
   Let $K \to L$ be a Galois extension of fields
   and let $G := \AUT_K L$.
@@ -1286,13 +1288,13 @@ In fact, we cannot have inseparable extensions in characteristic zero.
   we conclude $\bQ(\al - i \al) = L^{\< \tau \si \>}$.
 \end{eg}
 
-\section{Cyclotomic extensions, Kummer extensions}
+\section{Cyclotomic extensions, Cyclic extensions}
 
 We saw in the example of $T^3 - 2$ that
 in understanding its roots, the roots of $T^3 - 1$ appeared.
 This reduces the understanding of radical Galois extensions
 into two steps : \emph{cyclotomic} and \emph{cyclic} extensions.
-We study these as a stepping stone towards understanding 
+We study these as stepping stones towards understanding 
 radical extensions.
 
 \begin{dfn}
@@ -1401,17 +1403,18 @@ It will be useful to have another characterisation of Galois extensions.
   $K \to L$ be an extension where $T^n - 1 \in K[T]$ is split 
   and separable in $K$.
   Then \begin{enumerate}
-    \item if $L = K(\al)$ where $\al^n \in K$ then $L / K$ is Galois 
+    \item if $L = K(\al)$ where $\al^n \in K$
+    and is the minimal power of $\al$ in $K$, 
+    then $L / K$ is Galois 
     and the map \begin{align*}
       \GAL(L / K) \to \mu_n \\
       \si \mapsto \si(\al) / \al
     \end{align*}
-    is an injective group morphism.
+    is group isomorphism.
     Hence $\GAL(L / K)$ is cyclic.
-    Furthermore if $n$ is the minimal power of $\al$ inside $K$
-    then $\GAL(L / K)$ is order $n$.
     \item Conversely if $L / K$ is Galois with $\GAL(L / K)$ cyclic order $n$
-    then there exists $\al \in L$ such that $L = K(\al)$ and $\al^n \in K$.
+    then there exists $\al \in L$ such that $L = K(\al)$ and $\al^n$ is the
+    minimal power of $\al$ in $K$.
   \end{enumerate}
 \end{prop}
 This is completely analogous to the situation 
@@ -1432,23 +1435,14 @@ $\bQ(\sqrt[3]{2} , \om) / \bQ(\om)$.
     \frac{\si(\rho(\al))}{\rho(\al)}
     = \frac{\si(\al) z}{\al z} = \frac{\si(\al)}{\al}
   \]
+
+  (Bijective)
   Injectivity follows from kernel being trivial
   because any $\si$ is determined by what it does on $\al$.
-  $\GAL(L/K)$ is now cyclic because $\mu_n$ is cyclic by
-  the theory of cyclotomic extensions and 
-  any subgroup of a cyclic group is cyclic.
-
-  (minimal power)
-  Let $\tilde{n}$ be the minimal power of $\al$ inside $K$.
-  Then $n = m \tilde{n}$ and because \[
-    X^n - 1 = (X^{\tilde{n}} - 1)(X^m + X^{m - 1} + \cdots + 1)
-  \]
-  we have that $K$ splits $X^{\tilde{n}} - 1$.
-  So WLOG assume $n$ is the minimal power of $\al$ inside $K$.
-  We need to show $\GAL(L / K) \to \mu_n$ is surjective.
-  Suppose it is not.
-  Then $\GAL(L / K)$ is a cyclic subgroup of order $d < n$,
-  in particular for all $\si \in \GAL(L / K)$ we have $(\si(\al) / \al)^d = 1$.
+  Suppose for a contradiction that $\GAL(L / K) \to \mu_n$ is not surjective.
+  Then the image of $\GAL(L / K)$ is a subgroup of order $d < n$
+  so by Lagrange's theorem 
+  for all $\si \in \GAL(L / K)$ we have $(\si(\al) / \al)^d = 1$.
   This says $\si(\al^d) = \al^d$ i.e. $\al^d \in L^G = K$
   which contradicts minimality of $n$.
 
@@ -1466,6 +1460,8 @@ $\bQ(\sqrt[3]{2} , \om) / \bQ(\om)$.
   consequently there exists $\al \in L$ with
   eigenvalue $z \in \mu_n$, i.e. $\si(\al) = z \al$.
   Then $\si((\al)^n) = (\si(\al))^n = (z \al)^n = \al^n$ so $\al^n \in L^G = K$.
+  Let $\tilde{n}$ be the minimal power of $\al$ in $K$.
+  Then by $(1)$ we have $\tilde{n} = \abs{\GAL(L / K)} = n$.
 \end{proof}
 
 \section{Radical extensions}
@@ -1711,6 +1707,24 @@ We claim that $T^5 - T - 1 \in \bQ[T]$ has Galois group $S_5$
 which is not solvable.
 To compute its Galois group, we introduce an effective technique
 called \emph{Frobenius lifts}.
+
+\begin{prop}
+  
+  The polynomial $T^5 - T - 1 \in \bQ[T]$ has Galois group $S_5$
+  and hence is not solvable by radicals.
+\end{prop}
+
+\begin{prop}[Cyclotomic extensions in characteristic zero]
+  
+\end{prop}
+
+\begin{eg}
+  Constructing regular pentagon.
+\end{eg}
+
+\begin{prop}[Characterization of constructible regular polygons]
+  
+\end{prop}
 
 \section{Bonus : Sneak peak at perfectoid fields}
 
