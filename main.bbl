@@ -16,5 +16,81 @@
   {}
 \endgroup
 
+
+\refsection{0}
+  \datalist[entry]{nyt/global//global/global}
+    \entry{FW83}{article}{}
+      \name{author}{2}{}{%
+        {{hash=32a4a849eae57b89f38c9ccd21f3157f}{%
+           family={Fontaine},
+           familyi={F\bibinitperiod},
+           given={Jean-Marc},
+           giveni={J\bibinithyphendelim M\bibinitperiod}}}%
+        {{hash=18aa2f973da199b6034b1b13acc0e253}{%
+           family={Wintenberger},
+           familyi={W\bibinitperiod},
+           given={Jean-Pierre},
+           giveni={J\bibinithyphendelim P\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {fr}%
+      }
+      \list{publisher}{1}{%
+        {Elsevier}%
+      }
+      \strng{namehash}{2060e9e394e87aedee07838cac30da5b}
+      \strng{fullhash}{2060e9e394e87aedee07838cac30da5b}
+      \strng{bibnamehash}{2060e9e394e87aedee07838cac30da5b}
+      \strng{authorbibnamehash}{2060e9e394e87aedee07838cac30da5b}
+      \strng{authornamehash}{2060e9e394e87aedee07838cac30da5b}
+      \strng{authorfullhash}{2060e9e394e87aedee07838cac30da5b}
+      \field{labelalpha}{FW83}
+      \field{sortinit}{F}
+      \field{sortinithash}{669c706c6f1fbf3b5a83d26f1d9e9e72}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Annales scientifiques de l'École Normale Supérieure}
+      \field{number}{1}
+      \field{title}{Le corps des normes de certaines extensions infinies de corps locaux ; applications}
+      \field{volume}{4e s{é}rie, 16}
+      \field{year}{1983}
+      \field{pages}{59\bibrangedash 89}
+      \range{pages}{31}
+      \verb{doi}
+      \verb 10.24033/asens.1440
+      \endverb
+      \verb{urlraw}
+      \verb http://www.numdam.org/articles/10.24033/asens.1440/
+      \endverb
+      \verb{url}
+      \verb http://www.numdam.org/articles/10.24033/asens.1440/
+      \endverb
+    \endentry
+    \entry{stacks-project}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=abb7996abcbb3ba4cf4194c8dcb595ca}{%
+           family={{Stacks Project Authors}},
+           familyi={S\bibinitperiod},
+           given={The},
+           giveni={T\bibinitperiod}}}%
+      }
+      \strng{namehash}{abb7996abcbb3ba4cf4194c8dcb595ca}
+      \strng{fullhash}{abb7996abcbb3ba4cf4194c8dcb595ca}
+      \strng{bibnamehash}{abb7996abcbb3ba4cf4194c8dcb595ca}
+      \strng{authorbibnamehash}{abb7996abcbb3ba4cf4194c8dcb595ca}
+      \strng{authornamehash}{abb7996abcbb3ba4cf4194c8dcb595ca}
+      \strng{authorfullhash}{abb7996abcbb3ba4cf4194c8dcb595ca}
+      \field{labelalpha}{Stacks}
+      \field{sortinit}{S}
+      \field{sortinithash}{322b1d5276f2f6c1bccdcd15920dbee6}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://stacks.math.columbia.edu}}
+      \field{shorthand}{Stacks}
+      \field{title}{\textit{Stacks Project}}
+      \field{year}{2018}
+    \endentry
+  \enddatalist
+\endrefsection
 \endinput
 
